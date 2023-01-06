@@ -1,0 +1,192 @@
+﻿@page "/author/{AuthorName}"
+@using Microsoft.EntityFrameworkCore
+@using System.Globalization
+@using WebBlog.Models
+
+@inject NavigationManager NavManager
+
+@inject BlogDBContext _context
+
+<PageTitle>@pageTitle</PageTitle>
+
+<HeadContent>
+	<!-- Primary Meta Tags -->
+	<meta name="title" content=@title>
+	<meta name="description" content=@description>
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website">
+	<meta property="og:url" content=@NavManager.Uri>
+	<meta property="og:title" content=@title>
+	<meta property="og:description" content=@description>
+	<meta property="og:image" content="@imageUrl">
+
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image">
+	<meta property="twitter:url" content=@NavManager.Uri>
+	<meta property="twitter:title" content=@title>
+	<meta property="twitter:description" content=@description>
+	<meta property="twitter:image" content="@imageUrl">
+</HeadContent>
+
+<!-- Begin Top Author Page
+================================================== -->
+<div class="container">
+	<div class="row">
+		<NavCategory/>
+		<div class="col-md-2"></div>
+		<div class="col-md-8 col-md-offset-2">
+			@if (authors != null)
+			{
+				@foreach (var author in authors)
+				{
+					<div class="mainheading">
+						<div class="row post-top-meta authorpage">
+							<div class="col-md-10 col-xs-12">
+								<h2>@author.UserName</h2>
+								<span class="author-description">@author.Description</span>
+							</div>
+							<div class="col-md-2 col-xs-12">
+								<img class="author-thumb" src="@author.ImageUrl" alt="imageauthor">
+							</div>
+						</div>
+					</div>
+				}
+			}
+		</div>
+	</div>
+</div>
+<!-- End Top Author Meta
+================================================== -->
+
+<!-- Begin Author Posts
+================================================== -->
+<div class="graybg authorpage">
+	<div class="container">
+		<div class="listrecent listrelated">
+			@if (posts != null)
+			{
+				@foreach (var post in posts)
+				{
+						<!-- begin post -->
+						<div class="authorpostbox">
+							<div class="card">
+								<a href="/post/@post.Url" class="text-center">
+									<img class="img-fluid img-thumb" src="/img/@post.Image" alt="postimage">
+								</a>
+								<div class="card-block">
+									<h2 class="card-title"><a href="/post/@post.Url">@post.PostName</a></h2>
+								<h4 class="card-text">@post.ShortDescription</h4>
+									<div class="metafooter">
+										<div class="wrapfooter">
+											<span class="meta-footer-thumb">
+											<a href="/author/@post.User.UserName"><img class="author-thumb" src="@post.User.ImageUrl" alt="imageauthor"></a>
+											</span>
+											<span class="author-meta">
+												<span class="post-name"><a href="/author/@post.User.UserName">@post.User.UserName</a></span><br/>
+												<span class="post-date">@post.DateCreate?.ToString("dddd, dd MMMM yyyy",ci) </span><span> • </span>
+												<span class="post-read">@((DateTime.Now - post.DateCreate) > timeSpan ?
+												(DateTime.Now - post.DateCreate)?.ToString(@"%d", ci) + " ngày trước" : "Mới đăng")</span>	
+											</span>
+											<span class="post-read-more"><a href="post" title="Read Story"><svg class="svgIcon-use" width="25" height="25" ><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- end post -->
+				}
+			}
+		</div>
+	</div>
+</div>
+<!-- End Author Posts
+================================================== -->
+
+@*<!-- Begin Footer
+================================================== -->
+<div class="container">
+	<div class="footer">
+	  <p class="pull-left">
+	    Copyright &copy; 2022 Zingle.Click
+	  </p>
+	  <p class="pull-right">
+	    Design Theme by Zing
+	  </p>
+	<div class="clearfix"></div>
+	</div>
+</div>
+<!-- End Footer
+================================================== -->*@
+
+@code {
+	[Parameter]
+	public string? AuthorName { get; set; }
+
+	private string CategoryName;
+
+	//private static BlogDBContext _context = new BlogDBContext();
+
+	private List<Models.Post> posts;
+
+	private Models.Post post;
+
+	private string content = "";
+
+	private MarkupString ms;
+
+	private CultureInfo ci = new CultureInfo("vi-VN");
+
+	private TimeSpan timeSpan = new TimeSpan(24, 0, 0);
+
+	private List<User> authors;
+
+	private string pageTitle = "";
+
+	private string description = "";
+
+	private string title = "";
+
+	private string imageUrl = "";
+
+	protected override async Task OnParametersSetAsync()
+	{
+		LoadStateAsync();
+	}
+
+	private void LoadStateAsync()
+	{
+		if (AuthorName == "All")
+		{
+			authors = _context.Users.Include(e => e.Role).Where(e => e.Role.RoleName.Equals("Admin") && e.IsDisable == false).ToList();
+			posts = _context.Posts.Include(e => e.User).Include(e => e.Category).Where(e => e.IsDisable == false)
+						.OrderByDescending(e => e.DateCreate).Take(10).ToList();
+			pageTitle = "Tất cả tác giả";
+			title = pageTitle;
+			description = "Tất cả tác giả của Zingle Blogger";
+			imageUrl = "backgroundzingle.webp";
+		}
+		else
+		{
+			authors = _context.Users.Include(e => e.Role).Where(e => e.Role.RoleName.Equals("Admin") && e.UserName.ToLower().Equals(AuthorName.ToLower()) && e.IsDisable == false).Take(1).ToList();
+
+			if (authors.Count==0)
+			{
+				authors = _context.Users.Include(e => e.Role).Where(e => e.Role.RoleName.Equals("Admin") && e.IsDisable == false).ToList();
+			}
+			else
+			{
+				var author = authors.FirstOrDefault();
+
+				string name = author.UserName;
+				posts = _context.Posts.Include(e => e.User).Include(e => e.Category).Where(e => e.IsDisable == false && e.User.UserName.Equals(name))
+						.OrderByDescending(e => e.DateCreate).Take(10).ToList();
+
+				pageTitle = author.UserName;
+				title = pageTitle;
+				description = author.Description;
+				imageUrl = author.ImageUrl;
+			}
+		}
+	}
+}

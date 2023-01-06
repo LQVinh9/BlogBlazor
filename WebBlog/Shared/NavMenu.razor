@@ -1,0 +1,59 @@
+﻿<nav class="navbar navbar-expand-lg navbar-light bg-light rounded" aria-label="Eleventh navbar example">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img class="catsleep" src="/img/catsleep.webp" alt="catsleep">
+            Zingle.Click
+        </a>
+
+        <button class="navbar-toggler fa-2x" @onclick="ToggleNavMenu">
+            <i class="fa fa-home"></i> 
+        </button>
+
+        @*<button class="navbar-toggler" onclick="@ToggleNavMenu" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>*@
+
+        <div class="@NavMenuCssClass navbar-collapse" id="navbarsExample09">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <NavLink class="nav-link" href="/" Match="NavLinkMatch.All" @onclick="ToggleNavMenu">
+                <span class="oi oi-plus" aria-hidden="true"></span> Trang Chủ
+              </NavLink>
+              @*<NavLink class="nav-link" href="/Post">
+                <span class="oi oi-plus" aria-hidden="true"></span> Mới nhất
+              </NavLink>*@
+              <NavLink class="nav-link" href="/author/All" @onclick="ToggleNavMenu">
+                <span class="oi oi-plus" aria-hidden="true"></span> Tác giả
+              </NavLink>
+            @*<li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle @DropdownShow" href="#" id="dropdown09" data-bs-toggle="dropdown" aria-expanded="false" onclick="@ToggleShow">Dropdown</a>
+              <ul class="dropdown-menu @DropdownShow" aria-labelledby="dropdown09">
+                <li><a class="dropdown-item" href="/">Action</a></li>
+                <li><a class="dropdown-item" href="/">Another action</a></li>
+                <li><a class="dropdown-item" href="/">Something else here</a></li>
+              </ul>
+            </li>*@
+          </ul>
+          @*<form>
+            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+          </form>*@
+        </div>
+      </div>
+    </nav>
+
+@code {
+    private bool collapseNavMenu = true;
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private bool show = false;
+    private string? DropdownShow => show ? "show" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void ToggleShow()
+    {
+        show = !show;
+    }
+}

@@ -1,0 +1,67 @@
+﻿@using WebBlog.Models
+
+@inject BlogDBContext _context
+
+<nav class="navbar navbar-expand-lg navbar-light rounded mx-auto" aria-label="Eleventh navbar example">
+      <div class="container-fluid">
+        <h2 class="navbar-brand" href="#">
+            <img class="tvicon" src="/img/tv.webp" alt="vticon">
+            <text class="category">Chuyên mục</text>
+        </h2>
+
+        <button class="navbar-toggler btn" @onclick="ToggleNavMenu">
+            <i class="fa fa-bars"></i> 
+            Menu
+        </button>
+
+        @*<button class="navbar-toggler" onclick="@ToggleNavMenu" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>*@
+
+        <div class="@NavMenuCssClass navbar-collapse" id="navbarsExample09">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              
+              <NavLink class="nav-link" href="/" Match="NavLinkMatch.All" @onclick="ToggleNavMenu">
+                <span class="oi oi-plus" aria-hidden="true"></span> Tất cả
+              </NavLink>
+              @foreach (var category in categories)
+              {
+                string url = "/" + @category.Url;
+                      <NavLink class="nav-link" href=@url @onclick="ToggleNavMenu">
+                  <span class="oi oi-plus" aria-hidden="true"></span> @category.CategoryName
+                </NavLink>
+              }
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+@code {
+    private bool collapseNavMenu = true;
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private bool show = false;
+    private string? DropdownShow => show ? "show" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void ToggleShow()
+    {
+        show = !show;
+    }
+
+    //private static BlogDBContext _context = new BlogDBContext();
+
+    //MarkupString ms => (MarkupString)content;
+
+    private List<Category> categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = _context.Categories.Where(e => e.IsDisable == false).ToList();
+        //StateHasChanged();
+    }
+}

@@ -1,0 +1,197 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@namespace WebBlog.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta name="google-site-verification" content="XyfrxjTrKMocI9hu4o5oDYTYlPjVrISLrLQm7r9_F78" />
+
+<!-- Google tag (gtag.js) -->
+<script src="https://www.googletagmanager.com/gtag/js?id=G-Q4JHY8L6QL" defer></script>
+<script defer>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Q4JHY8L6QL');
+</script>
+
+<meta charset="utf-8">
+
+@*<!-- Primary Meta Tags -->
+<title>Zingle Blogger - Nơi tin tức là không được chậm trễ</title>
+<meta name="title" content="Zingle Blogger - Nơi tin tức là không được chậm trễ">
+<meta name="description" content="Tin tức luôn được đến bạn một cách nhanh nhất. Trải nghiệm tính năng lướt tin tức nhanh chóng. Với các chuyên mục được ưu chuộng nhất hiện nay, từ ẩm thực đến công nghệ, đời sống, du lịch, giải trí, sức khỏe, thời trang và thú cưng. ">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://zingle.click/">
+<meta property="og:title" content="Zingle Blogger - Nơi tin tức là không được chậm trễ">
+<meta property="og:description" content="Tin tức luôn được đến bạn một cách nhanh nhất. Trải nghiệm tính năng lướt tin tức nhanh chóng. Với các chuyên mục được ưu chuộng nhất hiện nay, từ ẩm thực đến công nghệ, đời sống, du lịch, giải trí, sức khỏe, thời trang và thú cưng. ">
+<meta property="og:image" content="/img/pictures/backgroundzingle.webp">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://zingle.click/">
+<meta property="twitter:title" content="Zingle Blogger - Nơi tin tức là không được chậm trễ">
+<meta property="twitter:description" content="Tin tức luôn được đến bạn một cách nhanh nhất. Trải nghiệm tính năng lướt tin tức nhanh chóng. Với các chuyên mục được ưu chuộng nhất hiện nay, từ ẩm thực đến công nghệ, đời sống, du lịch, giải trí, sức khỏe, thời trang và thú cưng. ">
+<meta property="twitter:image" content="/img/pictures/backgroundzingle.webp">*@
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="zingle.click">
+<link rel = "icon" href = "/img/catsleep.webp" type = "image/x-icon">
+<!-- Bootstrap core CSS -->
+@*<link rel="preload stylesheet" href="~/css/bootstrap/bootstrap.min.css" as="style">*@
+<link rel="preload stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" as="style" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<!-- Fonts -->
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="preload stylesheet" as="style">
+<link href="https://fonts.googleapis.com/css?family=Righteous" rel="preload stylesheet" as="style">
+<!-- Custom styles for this template -->
+<link href="~/css/mediumish.css" rel="preload stylesheet" as="style">
+
+<component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+
+</head>
+<body class="mb-20">
+    <base href="~/" />
+    @RenderBody()
+
+    @*<div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>*@
+
+<!-- Footer -->
+<footer class="text-center text-lg-start bg-white text-muted">
+  <!-- Section: Social media -->
+  <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+    <!-- Left -->
+    <div class="me-5 d-none d-lg-block">
+      <span>Kết nối với chúng tôi trên các mạng xã hội:</span>
+    </div>
+    <!-- Left -->
+
+    <!-- Right -->
+    <div>
+      <a href="#" class="me-4 link-grayish"><img class="icons-image" src="/img/facebook.webp" alt="facebook"/></a>
+      
+      <a href="https://www.zingle.click/" class="me-4 link-grayish"><img class="icons-image" src="/img/google.webp" alt="google"/></a>
+
+      <a href="#" class="me-4 link-grayish"><img class="icons-image" src="/img/twitter.webp" alt="twitter"/></a>
+
+      <a href="#" class="me-4 link-grayish"><img class="icons-image" src="/img/instagram.webp" alt="instagram"/></a>
+
+      <a href="#" class="me-4 link-grayish"><img class="icons-image" src="/img/linkedin.webp" alt="linkedin"/></a>
+    </div>
+    <!-- Right -->
+  </section>
+  <!-- Section: Social media -->
+
+  <!-- Section: Links  -->
+  <section class="">
+    <div class="container text-center text-md-start mt-5">
+      <!-- Grid row -->
+      <div class="row mt-3">
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+          <!-- Content -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            <i class="fas fa-gem me-3 text-grayish"></i>
+            <img class="icons-image" src="/img/catsleep.webp" alt="catsleepicon"/>
+            <text class="ms-2">Zingle Blogger</text>
+          </h6>
+          <p>
+            Tin tức luôn được đến bạn một cách nhanh nhất. Trải nghiệm tính năng lướt tin tức nhanh chóng.
+          </p>
+          <p>
+            Với các chuyên mục được ưu chuộng nhất hiện nay, từ ẩm thực đến công nghệ, đời sống, giải trí, thể thao, thời trang và thú cưng.
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            <img class="icons-image" src="/img/tv.webp" alt="tvicon"/>
+            <text class="ms-2">Chuyên mục</text>
+          </h6>
+          <p>
+            <a href="https://www.zingle.click/amthuc" class="text-reset">Ẩm Thực</a>
+          </p>
+          <p>
+            <a href="https://www.zingle.click/congnghe" class="text-reset">Công nghệ</a>
+          </p>
+          <p>
+            <a href="https://www.zingle.click/giaitri" class="text-reset">Giải trí</a>
+          </p>
+          <p>
+            <a href="https://www.zingle.click/thethao" class="text-reset">Thể thao</a>
+          </p>
+          <p>
+            <a href="https://www.zingle.click/thoitrang" class="text-reset">Thời trang</a>
+          </p>
+          <p>
+            <a href="https://www.zingle.click/thucung" class="text-reset">Thú cưng</a>
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            <img class="icons-image" src="/img/blogger.webp" alt="bloggericon"/>
+            <text class="ms-2">Tác giả</text>
+          </h6>
+          <p>
+            <a href="https://www.zingle.click/author/Tr%C3%A2m%20Cute" class="text-reset">Trâm Cute</a>
+          </p>
+          <p>
+            <a href="https://www.zingle.click/author/Zing" class="text-reset">Zing</a>
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">
+              <img class="icons-image" src="/img/house.webp" alt="address"/> 
+              <text class="ms-2">Contact</text>
+          </h6>
+          <p>
+            TPHCM, Việt Nam
+          </p>
+          <p>
+            zingle.click@gmail.com
+          </p>
+        </div>
+        <!-- Grid column -->
+      </div>
+      <!-- Grid row -->
+    </div>
+  </section>
+  <!-- Section: Links  -->
+
+  <!-- Copyright -->
+  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.025);">
+    © 2021 Copyright:
+    <a class="text-reset fw-bold" href="https://www.zingle.click/">Zingle.Click</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+
+<script src="_framework/blazor.server.js" defer></script>
+
+</body>
+</html>

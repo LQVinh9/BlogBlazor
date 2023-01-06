@@ -1,0 +1,222 @@
+﻿@page "/{CategoryInput?}"
+@using Microsoft.EntityFrameworkCore
+@using System.Globalization
+@using WebBlog.Models
+
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage ProtectedLocalStore
+
+@inject NavigationManager NavManager
+
+@inject BlogDBContext _context
+
+@inject ILogger<Counter> logger
+
+<PageTitle>@pageTitle</PageTitle>
+
+<HeadContent>
+	<!-- Primary Meta Tags -->
+	<meta name="title" content=@title>
+	<meta name="description" content=@description>
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website">
+	<meta property="og:url" content=@NavManager.Uri>
+	<meta property="og:title" content=@title>
+	<meta property="og:description" content=@description>
+	<meta property="og:image" content="/img/backgroundzingle.webp">
+
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image">
+	<meta property="twitter:url" content=@NavManager.Uri>
+	<meta property="twitter:title" content=@title>
+	<meta property="twitter:description" content=@description>
+	<meta property="twitter:image" content="/img/backgroundzingle.webp">
+</HeadContent>
+
+<!-- Begin Site Title
+================================================== -->
+<div class="container">
+
+	<NavCategory />
+
+	<div>
+		<h1 class="posttitle">Zingle Logger</h1>
+		<p>Nơi tin tức luôn được đến bạn một cách nhanh nhất. Những tin tức mới nhất luôn được cập nhật.</p>
+	</div>
+	
+<!-- End Site Title
+================================================== -->
+
+	<!-- Begin Featured
+	================================================== -->
+	<section class="featured-posts">
+	<div class="section-title">
+		<h2><span>Mới nhất</span></h2>
+	</div>
+	<div class="card-columns listfeaturedtag">
+
+			@if (@posts != null) {
+				@foreach (var post in posts.Take(4))
+				{
+					<!-- begin post -->
+					<div class="card">
+						<div class="row">
+							<div class="col-md-5 wrapthumbnail">
+								<a href="post/@post.Url">
+									<div class="thumbnail" style="background-image:url(img/@post.Image);">
+									</div>
+								</a>
+							</div>
+							<div class="col-md-7">
+								<div class="card-block">
+									<h2 class="card-title"><a href="post/@post.Url">@post.PostName</a></h2>
+									<h4 class="card-text">@post.ShortDescription</h4>
+									<div class="metafooter">
+										<div class="wrapfooter">
+											<span class="meta-footer-thumb">
+												<a href="author/@post.User.UserName"><img class="author-thumb" src="@post.User.ImageUrl" alt="imageuser"></a>
+											</span>
+											<span class="author-meta">
+												<span class="post-name"><a href="author/@post.User.UserName">@post.User.UserName</a></span><br/>
+														<span class="post-date">@post.DateCreate?.ToString("dddd, dd MMMM yyyy",ci)</span><span>
+														• </span><span class="post-read">@((DateTime.Now - post.DateCreate) > timeSpan ?
+															(DateTime.Now - post.DateCreate)?.ToString(@"%d", ci) + " ngày trước" : "Mới đăng")</span>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--end post -->
+				}
+			}
+
+		</div>
+	</section>
+	<!-- End Featured
+	================================================== -->
+
+	<!-- Begin List Posts
+	================================================== -->
+	<section class="recent-posts">
+		<div class="section-title">
+			<h2><span>@CategoryName</span></h2>
+		</div>
+		<div class="card-columns listrecent">
+
+			@if (@posts != null)
+			{
+				@foreach (var post in posts)
+				{
+					<!-- begin post -->
+					<div class="card">
+						<a href="post/@post.Url" class="text-center">
+							<img class="img-fluid w-100" src="img/@post.Image" alt="postimage">
+						</a>
+						<div class="card-block">
+							<h2 class="card-title"><a href="post/@post.Url">@post.PostName</a></h2>
+							<h4 class="card-text">@post.ShortDescription</h4>
+							<div class="metafooter">
+								<div class="wrapfooter">
+									<span class="meta-footer-thumb">
+										<a href="author/@post.User.UserName"><img class="author-thumb" src="@post.User.ImageUrl" alt="imagepost"></a>
+									</span>
+									<span class="author-meta">
+										<span class="post-name"><a href="author/@post.User.UserName">@post.User.UserName</a></span><br/>
+										<span class="post-date">@post.DateCreate?.ToString("dddd, dd MMMM yyyy",ci)</span><span>
+										• </span><span class="post-read">@((DateTime.Now - post.DateCreate) > timeSpan ?
+											(DateTime.Now - post.DateCreate)?.ToString(@"%d", ci) + " ngày trước" : "Mới đăng")</span>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- end post -->
+				}
+			}
+
+		</div>
+	</section>
+	<!-- End List Posts
+	================================================== -->
+
+	@*<!-- Begin Footer
+	================================================== -->
+	<div class="footer">
+		<p class="pull-left">
+			Copyright &copy; 2022 Zingle.Click
+		</p>
+		<p class="pull-right">
+			Design Theme by Zing
+		</p>
+		<div class="clearfix">
+		</div>
+	</div>
+	<!-- End Footer
+	================================================== -->*@
+
+</div>
+<!-- /.container -->
+
+@code{
+	[Parameter]
+	public string? CategoryInput { get; set; }
+
+	private string CategoryName;
+
+	private CultureInfo ci = new CultureInfo("vi-VN");
+
+	private TimeSpan timeSpan = new TimeSpan(24, 0, 0);
+
+	private List<Models.Post> posts;
+
+	private string pageTitle = "";
+
+	private string description = "";
+
+	private string title = "";
+
+	protected override async Task OnInitializedAsync()
+	{
+
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		LoadStateAsync();
+	}
+
+	public void LoadStateAsync()
+	{
+		if (CategoryInput == null)
+		{
+			posts = _context.Posts.Include(e => e.User).Where(e => e.IsDisable == false).OrderByDescending(e => e.DateCreate).ToList();
+			CategoryName = "Tất cả";
+			pageTitle = "Zingle Blogger - Nơi tin tức mới nhất luôn được cập nhật";
+			description = "Tin tức luôn được đến bạn một cách nhanh nhất. Những tin tức mới nhất luôn được cập nhật. Với các chuyên mục tin nhanh được ưu chuộng nhất hiện nay.";
+			title = CategoryName;
+		}
+		else
+		{
+			var category = _context.Categories.Where(e => e.Url.ToLower().Equals(CategoryInput.ToLower())).FirstOrDefault();
+			if (category == null) NavManager.NavigateTo("/");
+			else
+			{
+				CategoryName = category.CategoryName;
+				pageTitle = CategoryName;
+				description = category.Description;
+				title = CategoryName;
+			}
+
+			posts = _context.Posts.Include(e => e.User).Include(e => e.Category).Where(e => e.IsDisable == false && e.Category.Url.ToLower().Equals(CategoryInput.ToLower()))
+							.OrderByDescending(e => e.DateCreate).Take(10).ToList();
+		}
+	}
+}
